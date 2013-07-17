@@ -83,7 +83,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
 
     @NewRound
     public void newRound() {
-        this.toGenerate = new LinkedList<>();
+        this.toGenerate = new LinkedList<Element>();
     }
 
     @Process(Bean.class)
@@ -113,7 +113,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
                     AnnotationValue annVal = beanAnnotation.getAnnotationValueFor("value");
                     List<AnnotationMirror> props = (List<AnnotationMirror>)annVal.getValue();
 
-                    List<String> nonNullProps = new LinkedList<>();
+                    List<String> nonNullProps = new LinkedList<String>();
 
                     for (AnnotationMirror propMirror : props) {
                         SAPAnnotation propAnn = new SAPAnnotation(propMirror);

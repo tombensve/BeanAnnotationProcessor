@@ -55,7 +55,7 @@ This annotation processor depends on [SimplifiedAnnotationProcessor](https://git
 
 ## Requirements
 
-This requires Java 7 or higher.
+This requires Java 6 or higher.
 
 ## Usage
 
