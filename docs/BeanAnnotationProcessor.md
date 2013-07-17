@@ -12,6 +12,9 @@ This is a very simple java bean annotation processor.
         /** The type of the property, default String. */
         Class type() default String.class;
     
+        /** Generics types for the type. */
+        Class[] generics() default {};
+
         /** The default value of the property, default none. */
         String init() default "";
     
@@ -48,6 +51,14 @@ If any property has specified _required=true_ then a `public void validate()` me
 
     Address address = new Address().setName("Tommy Svensson").setStreetName("Gronbrinksgatan").setStreetNo(9)
         .setZip(11759).setCity("Stockholm");
+
+To generate a Collection property like a List do something like this:
+
+    @Property(name="myList", type=List.class, generics={String.class})
+
+If you want the list initialized from the beginning so that you just can do _...getMyList().add(...)_ declare the property like this:
+
+    @Property(name="myList", type=List.class, generics={String.class}, init="new LinkedList<String>()")
 
 ## Dependencies
 

@@ -48,7 +48,10 @@ import se.natusoft.annotation.processor.simplified.model.SAPType;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -119,6 +122,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
                         SAPAnnotation propAnn = new SAPAnnotation(propMirror);
                         String propName = propAnn.getValueFor("name").toString();
                         String propType = propAnn.getValueFor("type").toString();
+                        List<AnnotationValue> propTypeGenerics = (List<AnnotationValue>)propAnn.getAnnotationValueFor("generics").getValue();
                         String propDef = propAnn.getValueFor("init").toString();
                         boolean required = propAnn.getValueFor("required").toBoolean();
 
@@ -128,17 +132,27 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
 
                         verbose("Generating property: " + propName);
                         String defValue = propDef.trim().length() > 0 ? propDef : null;
-                        jos.field("private", propType, propName, defValue);
+                        String fieldType = propType.toString();
+                        if (propTypeGenerics.size() > 0) {
+                            String comma="";
+                            fieldType = fieldType + "<";
+                            for (AnnotationValue genType : propTypeGenerics) {
+                                fieldType = fieldType + comma + genType.getValue().toString();
+                                comma = ",";
+                            }
+                            fieldType = fieldType + ">";
+                        }
+                        jos.field("private", fieldType, propName, defValue);
 
                         jos.begMethod("public", "", type.getSimpleName(), setterName(propName));
                         {
-                            jos.methodArg(propType, "value");
+                            jos.methodArg(fieldType, "value");
                             jos.println("        this." + propName + " = value;");
                             jos.println("        return (" + type.getSimpleName() + ")this;");
                         }
                         jos.endMethod();
 
-                        jos.begMethod("public", "", propType, getterName(propName));
+                        jos.begMethod("public", "", fieldType, getterName(propName));
                         {
                             jos.println("        return this." + propName + ";");
                         }

@@ -54,6 +54,9 @@ public @interface Property {
     /** The type of the property, default String. */
     Class type() default String.class;
 
+    /** Generics types for the type. */
+    Class[] generics() default {};
+
     /** The default value of the property, default none. */
     String init() default "";
 
