@@ -114,6 +114,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
                     SAPAnnotation beanAnnotation = type.getAnnotationByClass(Bean.class);
 
                     AnnotationValue annVal = beanAnnotation.getAnnotationValueFor("value");
+                    @SuppressWarnings("unchecked")
                     List<AnnotationMirror> props = (List<AnnotationMirror>)annVal.getValue();
 
                     List<String> nonNullProps = new LinkedList<String>();
@@ -122,6 +123,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
                         SAPAnnotation propAnn = new SAPAnnotation(propMirror);
                         String propName = propAnn.getValueFor("name").toString();
                         String propType = propAnn.getValueFor("type").toString();
+                        @SuppressWarnings("unchecked")
                         List<AnnotationValue> propTypeGenerics = (List<AnnotationValue>)propAnn.getAnnotationValueFor("generics").getValue();
                         String propDef = propAnn.getValueFor("init").toString();
                         boolean required = propAnn.getValueFor("required").toBoolean();
@@ -132,7 +134,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
 
                         verbose("Generating property: " + propName);
                         String defValue = propDef.trim().length() > 0 ? propDef : null;
-                        String fieldType = propType.toString();
+                        String fieldType = propType;
                         if (propTypeGenerics.size() > 0) {
                             String comma="";
                             fieldType = fieldType + "<";
