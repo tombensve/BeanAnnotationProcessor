@@ -50,6 +50,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -92,7 +94,33 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
     @Process(Bean.class)
     public void processBean(Set<? extends Element> annotatedElements) {
         for (Element element : annotatedElements) {
-            this.toGenerate.add(element);
+            SAPType type = new SAPType(element);
+
+            if (getClass().getClassLoader().getClass().equals(java.net.URLClassLoader.class)) {
+                // This is very annoying!: When sources have already been generated and no clean have been
+                // done, then ((TypeElement)element).getSuperClass() will return the super class including
+                // package name. When no generated sources are available then this will return super class
+                // without package. type.getExtends() always returns the superclass as is, while
+                // type.getExtendsSimpleName() always removes an eventual package part.
+                //
+                // The real problem here is that if previously generated sources are available (no clean
+                // has been done since last build) then if I generate the sources again (overwrites the old)
+                // the compiler will complain about duplicate classes and fail!
+                if (type.getExtendsSimpleName().equals(type.getExtends())) {
+                    this.toGenerate.add(element);
+                }
+                else {
+                    System.err.println("[WARNING] " +
+                            "A previously generated version of '" + type.getQualifiedName() + "' already " +
+                            "exists! Overwriting it will cause a duplicate class exception! This means that any " +
+                            "changes in annotations will not be reflected in generated code unless you do " +
+                            "clean and build again! I suspect this is a maven problem where maven is compiling " +
+                            "the previously generated classes before annotation processing is triggered.");
+                }
+            }
+            else {
+                this.toGenerate.add(element);
+            }
         }
     }
 
@@ -102,12 +130,12 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
             for (Element annotatedElement : this.toGenerate) {
                 SAPType type = new SAPType((TypeElement)annotatedElement);
 
-                String genQName = type.getPackage() + "." + type.getExtends();
-                JavaSourceOutputStream jos = generationSupport.getToBeCompiledJavaSourceOutputStream(genQName);
+                String genQName = type.getPackage() + "." + type.getExtendsSimpleName();
+                JavaSourceOutputStream jos = generationSupport.getToBeCompiledJavaSourceOutputStream(genQName, annotatedElement);
                 jos.packageLine(type.getPackage());
                 jos.generatedAnnotation(getClass().getName(), "");
-                jos.begClass("public", "abstract", type.getExtends());
-                jos.begMethod("protected", "", "", type.getExtends());
+                jos.begClass("public", "abstract", type.getExtendsSimpleName());
+                jos.begMethod("protected", "", "", type.getExtendsSimpleName());
                 jos.endMethod();
                 jos.emptyLine();
                 {
