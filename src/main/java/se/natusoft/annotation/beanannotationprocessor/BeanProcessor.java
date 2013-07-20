@@ -96,31 +96,7 @@ public class BeanProcessor extends SimplifiedAnnotationProcessor {
         for (Element element : annotatedElements) {
             SAPType type = new SAPType(element);
 
-            if (getClass().getClassLoader().getClass().equals(java.net.URLClassLoader.class)) {
-                // This is very annoying!: When sources have already been generated and no clean have been
-                // done, then ((TypeElement)element).getSuperClass() will return the super class including
-                // package name. When no generated sources are available then this will return super class
-                // without package. type.getExtends() always returns the superclass as is, while
-                // type.getExtendsSimpleName() always removes an eventual package part.
-                //
-                // The real problem here is that if previously generated sources are available (no clean
-                // has been done since last build) then if I generate the sources again (overwrites the old)
-                // the compiler will complain about duplicate classes and fail!
-                if (type.getExtendsSimpleName().equals(type.getExtends())) {
-                    this.toGenerate.add(element);
-                }
-                else {
-                    System.err.println("[WARNING] " +
-                            "A previously generated version of '" + type.getQualifiedName() + "' already " +
-                            "exists! Overwriting it will cause a duplicate class exception! This means that any " +
-                            "changes in annotations will not be reflected in generated code unless you do " +
-                            "clean and build again! I suspect this is a maven problem where maven is compiling " +
-                            "the previously generated classes before annotation processing is triggered.");
-                }
-            }
-            else {
-                this.toGenerate.add(element);
-            }
+            this.toGenerate.add(element);
         }
     }
 
