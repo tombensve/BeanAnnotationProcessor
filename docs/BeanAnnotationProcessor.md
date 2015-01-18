@@ -29,6 +29,9 @@ This is a very simple java bean annotation processor.
     @Target(ElementType.TYPE)
     public @interface Bean {
         Property[] value();
+    
+        /** If set to true then a standard compliant java bean will be generated. */
+        boolean pure() default false;
     }
 
 Just annotate a class with @Bean({@Property(...), ...}):
@@ -42,8 +45,8 @@ Just annotate a class with @Bean({@Property(...), ...}):
         @Property(name="country", type=Country.class, init="new Country(\"SE\")")
     })
     public class Address extends AddressBean {}
- 
-When this is compiles AddressBean will be generated with private fields and setters and getters. And **no**, there is no class name + Bean name standard! It will generated whatever class name the annotated class extends. You can call it what you want!
+
+When this is compiles AddressBean will be generated with private fields and setters and getters. And **no**, there is no class name + Bean name standard! It will generate whatever class name the annotated class extends. You can call it what you want!
 
 If any property has specified _required=true_ then a `public void validate()` method will also be generated. Calling that method will throw an IllegalStateException if any of the required fields are null. The exception message will list the offending fields.
 
@@ -51,6 +54,8 @@ If any property has specified _required=true_ then a `public void validate()` me
 
     Address address = new Address().setName("Tommy Svensson").setStreetName("Gronbrinksgatan").setStreetNo(9)
         .setZip(11759).setCity("Stockholm");
+
+**Note** that this behavior is the default! You can however set the _pure_ property on `@Bean` to force a standard compliant java bean that also plays nice with for example Groovy. 
 
 To generate a Collection property like a List do something like this:
 
@@ -66,7 +71,7 @@ This annotation processor depends on [SimplifiedAnnotationProcessor](https://git
 
 ## Requirements
 
-This requires Java 6 or higher.
+This requires Java 7 or higher.
 
 ## Usage
 
@@ -79,7 +84,7 @@ All you need to use this is to have the annotation processor (and the Simplified
         <dependency>
             <groupId>se.natusoft.annotation</groupId>
             <artifactId>bean-annotation-processor</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>provided</scope>
          </dependency>
          ...
@@ -87,9 +92,9 @@ All you need to use this is to have the annotation processor (and the Simplified
 
     <repositories>
         <repository>
-            <id>maven-natusoft-se</id>
-            <name>Natusofts maven repository</name>
-            <url>http://maven.natusoft.se/</url>
+            <id>bintray-tommy-maven</id>
+            <name>Tommys Bintray Maven Repo</name>
+            <url>http://dl.bintray.com/tommy/maven</url>
         </repository>
     </repositories>
 
