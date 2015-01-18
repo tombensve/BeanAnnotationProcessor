@@ -14,18 +14,18 @@
 	<link rel="canonical" href="/licenses/cpl1.0.txt" />
 	<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
 	  <title>Common Public License Version 1.0 | Open Source Initiative</title>
-	  <link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_pbm0lsQQJ7A7WCCIMgxLho6mI_kBNgznNUWmTWcnfoE.css" media="all" />
-	<link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_Frms3llKkCDMuuCHUzEHGgSAc59B2At_Y3KWbmFS9k4.css" media="all" />
+	  <link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css" media="all" />
+	<link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_iABekW8OXxt1yff1_vg0sDV7lt8KP5iiCy47vQtDcDM.css" media="all" />
 	<link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_2wI77kyP-rJKVpFW5M3KFcj7Cb99lZalmubKIwWwsmU.css" media="all" />
 	<link type="text/css" rel="stylesheet" href="http://opensource.org/files/css/css_k3snrbsthqot7V7ccRZHS9OkCZkwBv4adtNieIVlbEU.css" media="print" />
 	
 	<!--[if lt IE 7]>
-	<link type="text/css" rel="stylesheet" href="http://opensource.org/themes/garland/fix-ie.css?mp63bk" media="all" />
+	<link type="text/css" rel="stylesheet" href="http://opensource.org/themes/garland/fix-ie.css?nhpl75" media="all" />
 	<![endif]-->
 	  <script type="text/javascript" src="http://opensource.org/files/js/js_xAPl0qIk9eowy_iS9tNkCWXLUVoat94SQT48UBCFkyQ.js"></script>
 	<script type="text/javascript">
 	<!--//--><![CDATA[//><!--
-	jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"garland","theme_token":"Qf16cmCxa9WW4j4qn_FyPxcvhwKB9m-XArc28eruVVs","js":{"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/aggregator\/aggregator.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/mollom\/mollom.css":1,"modules\/node\/node.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"themes\/garland\/style.css":1,"themes\/garland\/print.css":1,"themes\/garland\/fix-ie.css":1}}});
+	jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"garland","theme_token":"Pt1mW1PvMNiBSNZjU7GujOem52rzGuTpJ9UPJVSRG9A","js":{"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/aggregator\/aggregator.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/mollom\/mollom.css":1,"modules\/node\/node.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"themes\/garland\/style.css":1,"themes\/garland\/print.css":1,"themes\/garland\/fix-ie.css":1}}});
 	//--><!]]>
 	</script>
 	</head>
@@ -58,7 +58,7 @@
 	  <label class="element-invisible" for="edit-search-block-form--2">Search </label>
 	 <input title="Enter the terms you wish to search for." type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
 	</div>
-	<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Search" class="form-submit" /></div><input type="hidden" name="form_build_id" value="form-9HOmjdVV4_ZJlqaVXjkJacqBduVI4BSw0sqIaxj0Hr8" />
+	<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Search" class="form-submit" /></div><input type="hidden" name="form_build_id" value="form-7q2yI6x5oH25OVOKR_BDl0YUGW1IJoGsGHi8rpeSC84" />
 	<input type="hidden" name="form_id" value="search_block_form" />
 	</div>
 	</div></form>  </div>
@@ -71,17 +71,20 @@
 	    <ul class="menu"><li class="first collapsed"><a href="/about" title="About the Open Source Initiative">About the OSI</a></li>
 	<li class="collapsed"><a href="/osd" title="The actual OSD defining what constitutes an Open Source licence">The Open Source Definition</a></li>
 	<li class="collapsed"><a href="/licenses">Open Source Licenses</a></li>
-	<li class="collapsed"><a href="/trademark" title="Information about trademark and logo usage">Trademark and Logo Usage</a></li>
+	<li class="leaf"><a href="/working_groups">Working Groups</a></li>
 	<li class="leaf"><a href="/faq" title="Frequently Asked Questions about open source and about the OSI.">FAQ</a></li>
+	<li class="collapsed"><a href="/trademark" title="Information about trademark and logo usage">Trademark and Logo Usage</a></li>
 	<li class="collapsed"><a href="/osr-intro" title="Open Standards Requirement for Software">Open Standards</a></li>
 	<li class="leaf"><a href="/osi-open-source-education" title="OSI&#039;s Open Source Education Initiative and Activities">Open Source Education</a></li>
 	<li class="collapsed"><a href="/lists" title="The virtual committees where the OSI&#039;s work gets done">Mailing lists</a></li>
 	<li class="collapsed"><a href="/help" title="Resources for questions and further exploration">Getting Help</a></li>
 	<li class="collapsed"><a href="http://opensource.org/donate" title="">Donate to the OSI</a></li>
 	<li class="leaf"><a href="/members">OSI Individual Membership</a></li>
+	<li class="leaf"><a href="/store">OSI Store</a></li>
 	<li class="collapsed"><a href="/affiliates" title="Home page for OSI&#039;s membership scheme for non-profits and not-for-profits">OSI Affiliate Membership</a></li>
 	<li class="leaf"><a href="/contact" title="">Contact OSI</a></li>
-	<li class="last leaf"><a href="/ToS" title="Rules for posting content on this site">Terms of Service</a></li>
+	<li class="leaf"><a href="/ToS" title="Rules for posting content on this site">Terms of Service</a></li>
+	<li class="last leaf"><a href="/support">OSI Corporate Support</a></li>
 	</ul>  </div>
 	</div>
 	  </div>
@@ -290,7 +293,19 @@
 	
 	    
 	  <div class="content">
-	    <!-- Creative Commons License --><a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width: 0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />Opensource.org site content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  License</a>.<!-- /Creative Commons License -->
+	    <p style="text-align:center">Help shape the future of the Open Source Initiative...<br /><a href="http://osi.xwiki.com">visit and participate in the OSI wiki</a>.
+	</p>
+	
+	<div>
+	<a href="https://twitter.com/OpenSourceOrg" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @OpenSourceOrg</a>
+	<script>
+	<!--//--><![CDATA[// ><!--
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+	//--><!]]>
+	</script></div>
+	
+	<p>
+	<!-- Creative Commons License --><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width: 0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Opensource.org site content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<!-- /Creative Commons License -->
 	
 	<!-- <rdf:RDF xmlns="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 		<Work rdf:about="">
@@ -300,6 +315,8 @@
 	-->
 	
 	| <a href="../ToS">Terms of Service</a>
+	
+	</p>
 	  </div>
 	</div>
 	<div id="block-block-7" class="block block-block clearfix">
