@@ -1,2 +1,0 @@
-This is a dummy file to make git checkin the "resources" directory. This is required for the build to work
-since the @AutoDiscovery tries to generate a file there.
