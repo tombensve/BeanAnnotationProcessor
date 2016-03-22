@@ -6,7 +6,7 @@
 
     <groupId>se.natusoft.annotation</groupId>
     <artifactId>bean-annotation-processor</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <url>http://github/tombensve/SimplifiedAnnotationProcessor</url>
 
@@ -50,13 +50,14 @@
         <dependency>
             <groupId>se.natusoft.annotation</groupId>
             <artifactId>simplified-annotation-processor</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

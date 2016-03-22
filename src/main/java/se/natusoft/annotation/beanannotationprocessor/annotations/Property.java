@@ -5,7 +5,7 @@
  *         bean-annotation-processor
  *     
  *     Code Version
- *         1.0
+ *         1.2
  *     
  *     Description
  *         This provides some variants of annotation processors producing JavaBeans.

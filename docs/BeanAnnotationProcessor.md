@@ -84,19 +84,12 @@ All you need to use this is to have the annotation processor (and the Simplified
         <dependency>
             <groupId>se.natusoft.annotation</groupId>
             <artifactId>bean-annotation-processor</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
             <scope>provided</scope>
          </dependency>
          ...
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>bintray-tommy-maven</id>
-            <name>Tommys Bintray Maven Repo</name>
-            <url>http://dl.bintray.com/tommy/maven</url>
-        </repository>
-    </repositories>
-
 The reason for the `<scope>provided</scope>` is that this is only needed during compile, not runtime.
 
+**Note:** This is available in Bintrays JCenter, not in maven central!

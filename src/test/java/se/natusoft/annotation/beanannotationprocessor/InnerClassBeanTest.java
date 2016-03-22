@@ -36,14 +36,32 @@
  */
 package se.natusoft.annotation.beanannotationprocessor;
 
+
+import org.junit.Test;
+import static org.junit.Assert.*;
 import se.natusoft.annotation.beanannotationprocessor.annotations.Bean;
 import se.natusoft.annotation.beanannotationprocessor.annotations.Property;
 
-/**
- */
-@Bean({
-        @Property(name="name", required = true),
-        @Property(name = "address", init = "\"Address\""),
-        @Property(name = "age", type = int.class)
-})
-public class TestModel extends TestModelBean {}
+public class InnerClassBeanTest {
+
+    @Test
+    public void testInnerClassBean() throws Exception {
+        callee(new CalleeArgs().setAddress("Ankeborg").setName("Mr Qwerty").setAge(897));
+    }
+
+    // Use as named arguments.
+
+    @Bean({
+            @Property(name="name", required = true),
+            @Property(name = "address", init = "\"Address\""),
+            @Property(name = "age", type = int.class)
+    })
+    static class CalleeArgs extends CalleeArgsProvider {}
+
+    private void callee(CalleeArgs args) throws Exception {
+        assertEquals("Ankeborg", args.getAddress());
+        assertEquals("Mr Qwerty", args.getName());
+        assertEquals(897, args.getAge());
+    }
+
+}
