@@ -2,7 +2,7 @@
 
 Copyright © 2013 Natusoft AB
 
-__Version:__ 1.2
+__Version:__ 1.3
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -17,6 +17,12 @@ _Generates java beans using an @Bean annotation._
 ----
 
 ## History
+
+### Version 1.3
+
+* Now expects source level 1.8.
+
+* Updated dependency versions.
 
 ### Version 1.2
 
