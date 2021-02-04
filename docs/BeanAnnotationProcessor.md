@@ -71,7 +71,7 @@ This annotation processor depends on [SimplifiedAnnotationProcessor](https://git
 
 ## Requirements
 
-This requires Java 7 or higher.
+This requires Java 8 or higher.
 
 ## Usage
 
@@ -84,12 +84,40 @@ All you need to use this is to have the annotation processor (and the Simplified
         <dependency>
             <groupId>se.natusoft.annotation</groupId>
             <artifactId>bean-annotation-processor</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
             <scope>provided</scope>
          </dependency>
          ...
     </dependencies>
 
 The reason for the `<scope>provided</scope>` is that this is only needed during compile, not runtime.
+
+# CobolRecordBeanProcessor (Since 1.3)
+
+There is another variant of "Java Bean" processor: CobolRecordBeanProcessor. It takes the following annotations:
+
+        @CobolRecordBean(
+            value = {
+                @RecordProperty( name="test", size = 10),
+                @RecordProperty( name="date", size = 6, dateFormat = "YYMMDD"),
+                @RecordProperty( name = "number", size = 12)
+            }
+        )
+        public class TestCobolRecord extends TestCobolRecordBean { }
+
+These are all _String_ fields, except when dateFormat is set to anything other than "". The 
+date field is actually a string also, but it is wrapped by an inner generated CRBDate instance. This allows
+for getting and setting date as `java.util.Date` instances. `toString()` will return the date in String format.
+It also holds `java.text.SimpleDateFormat` specification for converting between `Date` and `String`. 
+
+The order of the `@RecordProperty(...)` annotations are important. Only size is specified in this annotation.
+The start and end position of each field in the Cobol record is calculated using size and position. You do not
+have to specify from and to, only size. This also means that if fields are added to the record, then you just
+add annotations for these new fields at the correct place, and it will work. If the from and to positions 
+had been specified then all fields after inserted field would have to be updated! Not so with this solution.
+
+Numeric values have no special handling like dates! You have to use Integer/Long/Float/Double.valueOf(str);
+
+# Available at
 
 **Note:** This is available in Bintrays JCenter, not in maven central!

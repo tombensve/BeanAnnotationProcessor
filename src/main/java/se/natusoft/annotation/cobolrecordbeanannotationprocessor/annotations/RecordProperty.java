@@ -31,25 +31,37 @@
  * AUTHORS
  *     tommy ()
  *         Changes:
- *         2016-03-22: Created!
+ *         2013-07-15: Created!
  *
  */
-package se.natusoft.annotation.beanannotationprocessor;
+package se.natusoft.annotation.cobolrecordbeanannotationprocessor.annotations;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * This specifies a cobol record field. The order of the annotation is important
+ * since positions will be calculated from this.
  */
-public class BPTest {
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+public @interface RecordProperty {
 
-    @Test
-    public void testAnn() {
-        TestModel testModel = new TestModel().setName("Tommy Svensson").setAge(52);
-        testModel.validate();
+    /** The name of the property. */
+    String name();
 
-        assertEquals(testModel.getAddress(), "Address");
-        assertEquals(testModel.getName(), "Tommy Svensson");
-        assertEquals(testModel.getAge(), 52);
-    }
+    /** The size of the record field. */
+    int size();
+
+    /** The date format if its a date field. (SimpleDateFormat). */
+    String dateFormat() default "";
+
+    /** The group the property belongs to. Documentative, optional. */
+    String group() default "";
+
+    /** A description of the property. Documentative, Optional. */
+    String description() default "";
+
 }

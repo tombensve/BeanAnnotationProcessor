@@ -31,25 +31,24 @@
  * AUTHORS
  *     tommy ()
  *         Changes:
- *         2016-03-22: Created!
+ *         2013-07-15: Created!
  *
  */
-package se.natusoft.annotation.beanannotationprocessor;
+package se.natusoft.annotation.cobolrecordbeanannotationprocessor.annotations;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * This indicates that the annotated type is a JavaBean.
  */
-public class BPTest {
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+public @interface CobolRecordBean {
+    RecordProperty[] value();
 
-    @Test
-    public void testAnn() {
-        TestModel testModel = new TestModel().setName("Tommy Svensson").setAge(52);
-        testModel.validate();
-
-        assertEquals(testModel.getAddress(), "Address");
-        assertEquals(testModel.getName(), "Tommy Svensson");
-        assertEquals(testModel.getAge(), 52);
-    }
+    /** If set to true then a standard compliant java bean will be generated. */
+    boolean pure() default false;
 }

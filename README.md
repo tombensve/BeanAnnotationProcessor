@@ -2,7 +2,7 @@
 
 Copyright © 2013 Natusoft AB
 
-__Version:__ 1.3
+__Version:__ 2.0
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -17,6 +17,29 @@ _Generates java beans using an @Bean annotation._
 ----
 
 ## History
+
+### 2.0
+
+One more processor: CobolRecordBeanProcessor. This uses
+@CobolRecordBean with multiple @RecordProperty. To read it
+takes a Cobol record String, passed to the String constructor.
+
+After instantiated, all fields can be accessed with setters and
+getters just like a JavaBean. A `toString()` will produce a
+Cobol record String again. You only specify name and record size
+in `©RecordProperty`, positions are calculated by order, which 
+makes it easy to add or remove properties.
+
+I did something similar with this (BeanAnnotationProcessor) at a
+customer a few years ago, to handle Cobol data from Swedish
+department of transportation, but only checked it in locally 
+since this was something I would never need again ... which was
+wrong! Now somewhere else, I need to read similar data from
+department of transportation again, so I fixed it again, and 
+this time I check it in with the project at GitHub. It is
+completely based on BeanProcessor.
+
+Never say never!
 
 ### Version 1.3
 
