@@ -2,7 +2,7 @@
 
 Copyright © 2013 Natusoft AB
 
-__Version:__ 2.0
+__Version:__ 2.0.1
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -17,6 +17,14 @@ _Generates java beans using an @Bean annotation._
 ----
 
 ## History
+
+### 2.0.1
+
+Added validation of passed string size to generated 
+CobolRecordBean. Throws an IllegalArgumentException if
+size is bad. This is a clear indication of that the
+record specification have changed, and the @RecordPropery
+annotations need to be updated.
 
 ### 2.0
 

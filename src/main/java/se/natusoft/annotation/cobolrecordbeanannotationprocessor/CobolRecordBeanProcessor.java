@@ -189,9 +189,22 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                     @SuppressWarnings("unchecked")
                     List<AnnotationMirror> props = (List<AnnotationMirror>) annVal.getValue();
 
+                    // Get total record size
+                    int recordSize = 0;
+                    for ( AnnotationMirror propMirror : props ) {
+                        SAPAnnotation propAnn = new SAPAnnotation( propMirror );
+                        int propSize = propAnn.getValueFor( "size" ).toInt();
+                        recordSize += propSize;
+                    }
+
                     jos.beginConstructorMethod( type.getExtendsSimpleName() );
                     {
                         jos.methodArg( "String", "cobolRecord" );
+
+                        // Validate that the passed string has expected size.
+                        jos.println("        if (cobolRecord.length() != " + recordSize +
+                                ") throw new IllegalArgumentException(\"Bad record size (\" + cobolRecord.length() + \")! Expected: " +
+                                recordSize + "!\" );");
 
                         int position = 0;
                         for ( AnnotationMirror propMirror : props ) {
