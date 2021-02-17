@@ -2,7 +2,7 @@
 
 Copyright © 2013 Natusoft AB
 
-__Version:__ 2.0.1
+__Version:__ 2.0.2
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -17,6 +17,13 @@ _Generates java beans using an @Bean annotation._
 ----
 
 ## History
+
+### 2.0.2
+
+Added `use=...` property on @RecordProperty used by
+@CobolRecordBean. If this is set to true for any property
+then setters and getters are only generated for those fields
+that have `use=true`.
 
 ### 2.0.1
 

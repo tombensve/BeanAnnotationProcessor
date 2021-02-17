@@ -64,4 +64,16 @@ public @interface RecordProperty {
     /** A description of the property. Documentative, Optional. */
     String description() default "";
 
+    /**
+     * If this is set to true for any of the records then this will have
+     * effect and only those with use=true will be generated as bean properties.
+     *
+     * Do note that all records are still needed even those with use=false
+     * since they are needed to calculate position of each field.
+     *
+     * When all are false this feature is disabled and all fields will be
+     * included.
+     */
+    boolean use() default false;
+
 }

@@ -100,15 +100,26 @@ There is another variant of "Java Bean" processor: CobolRecordBeanProcessor. It 
             value = {
                 @RecordProperty( name="test", size = 10),
                 @RecordProperty( name="date", size = 6, dateFormat = "YYMMDD"),
-                @RecordProperty( name = "number", size = 12)
+                @RecordProperty( name = "number", size = 12, use=true),
             }
         )
         public class TestCobolRecord extends TestCobolRecordBean { }
 
-These are all _String_ fields, except when dateFormat is set to anything other than "". The 
-date field is actually a string also, but it is wrapped by an inner generated CRBDate instance. This allows
+The date field is actually a string also, but it is wrapped by an 
+inner generated CRBDate instance. This allows
 for getting and setting date as `java.util.Date` instances. `toString()` will return the date in String format.
 It also holds `java.text.SimpleDateFormat` specification for converting between `Date` and `String`. 
+
+The `use` property is by default false, and when all properties
+have this as false then everything will be generated, but when
+one or more `use` is set to true then only those set to true
+will have a generated setter and getter. All will always have
+fields and will alsway be included in toString() and constructor
+will fill all fields. It is only getters and setters that get 
+affected. The reason for this is when you actually don't use
+the full record, only parts of it. In that case you specify
+the records you are interested in with `use=true` and you
+will only get setters and getters for those.
 
 The order of the `@RecordProperty(...)` annotations are important. Only size is specified in this annotation.
 The start and end position of each field in the Cobol record is calculated using size and position. You do not

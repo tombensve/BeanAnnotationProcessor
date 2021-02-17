@@ -85,11 +85,21 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
     // Methods
     //
 
+    /**
+     * Called when a new round of processing is started. Called by
+     * SimplifiedAnnotationProcessor, triggered by compiler.
+     */
     @NewRound
     public void newRound() {
         this.toGenerate = new LinkedList<Element>();
     }
 
+    /**
+     * Called to process an annotation. Called for each annotation of specified type.
+     * Called by SimplifiedAnnotationProcessor, triggered by compiler.
+     *
+     * @param annotatedElements The elements that was annotated.
+     */
     @Process(CobolRecordBean.class)
     public void processBean( Set<? extends Element> annotatedElements ) {
         for ( Element element : annotatedElements ) {
@@ -99,12 +109,50 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
         }
     }
 
-    // No, this is not a wonder of clarity!!
+    /**
+     * Generates code.
+     * Called by SimplifiedAnnotationProcessor, triggered by compiler.
+     *
+     * @param generationSupport Tool class to help with code generation.
+     */
     @GenerateSource
     public void generate( GenerationSupport generationSupport ) {
         try {
+
             for ( Element annotatedElement : this.toGenerate ) {
+
+                // This defaults to true, which will generate getters and setters for everything.
+                // But when a use=true is specified for a record value then this switches to false,
+                // and only use=true will result in a getter and setter. This way all fields are
+                // always provided and to String() will always include the full record. When use=true
+                // setters and getters are only generated for properties that have the use=true.
+                //
+                // This allows for only providing getters and setters for values you actually use
+                // but the while record is read and provided on toString(), but only those with
+                // use=true is readable and modifiable.
+                boolean useAllFields = true;
+
                 SAPType type = new SAPType( (TypeElement) annotatedElement );
+
+                // Check for "useAllFields". If any use=true then the use flag will apply and
+                // those without a true value will be excluded.
+                {
+                    SAPAnnotation cobolRecordBeanAnnotation = type.getAnnotationByClass( CobolRecordBean.class );
+
+                    AnnotationValue annVal = cobolRecordBeanAnnotation.getAnnotationValueFor( "value" );
+                    @SuppressWarnings("unchecked")
+                    List<AnnotationMirror> props = (List<AnnotationMirror>) annVal.getValue();
+
+                    // Get total record size
+                    int recordSize = 0;
+                    for ( AnnotationMirror propMirror : props ) {
+                        SAPAnnotation propAnn = new SAPAnnotation( propMirror );
+
+                        if ( propAnn.getValueFor( "use" ).toBoolean() ) useAllFields = false;
+                    }
+                }
+
+                //==== Start write of class ====//
 
                 String genQName = type.getPackage() + "." + type.getExtendsSimpleName();
                 JavaSourceOutputStream jos = generationSupport.getToBeCompiledJavaSourceOutputStream( genQName, annotatedElement );
@@ -115,8 +163,15 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                 jos.endMethod();
                 jos.emptyLine();
 
+                //==== CRBDate for support of date values ====/
+
+                // Note that this block of code was actually written in another class and verified, and then
+                // copied and pasted here. Thereby only println(...) statements rather than begClass(...),
+                // begMethod(...), etc.
+                //
+                // Also note that I'm not entirely convinced that this CRBDate class is a good idea ...
                 jos.println( "    public static class CRBDate {" );
-                jos.println( "        private int size;");
+                jos.println( "        private int size;" );
                 jos.println( "        private String date = \"      \";" );
                 jos.println( "        private java.text.SimpleDateFormat sdf;" );
                 jos.println( "        " );
@@ -126,8 +181,8 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                 jos.println( "        " );
                 jos.println( "        public CRBDate( String date, String dateFormat ) {" );
                 jos.println( "            if ( dateFormat != null && dateFormat.length() != 0 ) {" );
-                jos.println( "                this.size = dateFormat.length();");
-                jos.println( "                this.date = date.substring( 0, this.size );");
+                jos.println( "                this.size = dateFormat.length();" );
+                jos.println( "                this.date = date.substring( 0, this.size );" );
                 jos.println( "                this.sdf = new java.text.SimpleDateFormat( dateFormat );" );
                 jos.println( "            }" );
                 jos.println( "        }" );
@@ -162,7 +217,7 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                 jos.println( "        " );
                 jos.println( "        public CRBDate setDate( String date ) {" );
                 jos.println( "            this.date = date;" );
-                jos.println("             if (this.date.length() > this.size) this.date = this.date.substring(0, size );");
+                jos.println( "             if (this.date.length() > this.size) this.date = this.date.substring(0, size );" );
                 jos.println( "            return this;" );
                 jos.println( "        }" );
                 jos.println( "        " );
@@ -171,6 +226,9 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                 jos.println( "        }" );
                 jos.println( "    }" );
                 jos.println( "    " );
+
+                //==== Static support method to ensure field size. ====//
+
                 jos.println( "    private static String ensureSize( String value, int size ) {" );
                 jos.println( "        if ( value.length() > size ) {" );
                 jos.println( "            value = value.substring( 0, size );" );
@@ -197,21 +255,27 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                         recordSize += propSize;
                     }
 
+                    //==== Constructor ====//
+
                     jos.beginConstructorMethod( type.getExtendsSimpleName() );
                     {
                         jos.methodArg( "String", "cobolRecord" );
 
                         // Validate that the passed string has expected size.
-                        jos.println("        if (cobolRecord.length() != " + recordSize +
+                        jos.println( "        if (cobolRecord.length() != " + recordSize +
                                 ") throw new IllegalArgumentException(\"Bad record size (\" + cobolRecord.length() + \")! Expected: " +
-                                recordSize + "!\" );");
+                                recordSize + "!\" );" );
 
                         int position = 0;
                         for ( AnnotationMirror propMirror : props ) {
                             SAPAnnotation propAnn = new SAPAnnotation( propMirror );
+
+                            boolean use = propAnn.getValueFor( "use" ).toBoolean();
+
                             String propName = propAnn.getValueFor( "name" ).toString();
                             int propSize = propAnn.getValueFor( "size" ).toInt();
                             String dateFormat = propAnn.getValueFor( "dateFormat" ).toString();
+
 
                             String fieldType = dateFormat.length() == 0 ? "String" : "CRBDate";
                             if ( fieldType.equals( "CRBDate" ) ) {
@@ -225,13 +289,18 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                         }
                     }
                     jos.endMethod();
-                    jos.println("");
+                    jos.println( "" );
+
+                    //==== Properties ====//
 
                     for ( AnnotationMirror propMirror : props ) {
                         SAPAnnotation propAnn = new SAPAnnotation( propMirror );
                         String propName = propAnn.getValueFor( "name" ).toString();
                         int propSize = propAnn.getValueFor( "size" ).toInt();
                         String dateFormat = propAnn.getValueFor( "dateFormat" ).toString();
+                        boolean use = propAnn.getValueFor( "use" ).toBoolean();
+
+                        //==== Property field ====//
 
                         verbose( "Generating property: " + propName );
 
@@ -243,31 +312,39 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
                             jos.field( "private", fieldType, propName, "ensureSize(\"\"," + propSize + ")" );
                         }
 
-                        jos.begMethod( "public", "", pure ? "void" : type.getQualifiedName(), setterName( propName ) );
-                        {
-                            // Dates require special handling
-                            jos.methodArg( fieldType, "value" );
-                            if ( fieldType.equals( "CRBDate" ) ) {
-                                jos.println( "        this." + propName + " = value;" );
-                                jos.println( "    " );
-                                jos.println( "        this." + propName + ".setDate(ensureSize(this." + propName + ".toString(), " + propSize + "));" );
-                            } else {
-                                jos.println( "        this." + propName + " = ensureSize(value.toString(), " + propSize + ");" );
-                            }
+                        //==== Getters and Setters ====//
 
-                            if ( !pure ) {
-                                jos.println( "        return (" + type.getQualifiedName() + ")this;" );
-                            }
-                        }
-                        jos.endMethod();
+                        if ( useAllFields || use ) {
 
-                        jos.begMethod( "public", "", fieldType, getterName( propName ) );
-                        {
-                            jos.println( "        return this." + propName + ";" );
+                            jos.begMethod( "public", "", pure ? "void" : type.getQualifiedName(), setterName( propName ) );
+                            {
+                                // Dates require special handling
+                                jos.methodArg( fieldType, "value" );
+                                if ( fieldType.equals( "CRBDate" ) ) {
+                                    jos.println( "        this." + propName + " = value;" );
+                                    jos.println( "    " );
+                                    jos.println( "        this." + propName + ".setDate(ensureSize(this." + propName + ".toString(), " + propSize + "));" );
+                                } else {
+                                    jos.println( "        this." + propName + " = ensureSize(value.toString(), " + propSize + ");" );
+                                }
+
+                                if ( !pure ) {
+                                    jos.println( "        return (" + type.getQualifiedName() + ")this;" );
+                                }
+                            }
+                            jos.endMethod();
+
+                            jos.begMethod( "public", "", fieldType, getterName( propName ) );
+                            {
+                                jos.println( "        return this." + propName + ";" );
+                            }
+                            jos.endMethod();
+                            jos.emptyLine();
                         }
-                        jos.endMethod();
-                        jos.emptyLine();
+
                     }
+
+                    //==== toString() ====//
 
                     jos.begMethod( "public", "", "String", "toString" );
                     {
@@ -292,6 +369,8 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
         }
     }
 
+    //==== Support methods ====//
+
     private String setterName( String propName ) {
         return "set" + propName.substring( 0, 1 ).toUpperCase() + propName.substring( 1 );
     }
@@ -300,6 +379,9 @@ public class CobolRecordBeanProcessor extends SimplifiedAnnotationProcessor {
         return "get" + propName.substring( 0, 1 ).toUpperCase() + propName.substring( 1 );
     }
 
+    /**
+     * Called when all processing is done.
+     */
     @AllProcessed
     public void done() {
     }
