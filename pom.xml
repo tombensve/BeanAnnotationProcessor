@@ -8,7 +8,7 @@
     <artifactId>bean-annotation-processor</artifactId>
     <version>2.0.2</version>
 
-    <url>http://github/tombensve/SimplifiedAnnotationProcessor</url>
+    <url>http://github/tombensve/BeanAnnotationProcessor</url>
 
     <!--
         Project Information
@@ -42,6 +42,43 @@
         <system>github</system>
         <url>http://github.com/tombensve/BeanAnnotationProcessor/issues</url>
     </issueManagement>
+
+    <!--
+        Make sure we have access to ns repo.
+    -->
+    <repositories>
+        <repository>
+            <id>ns-repo</id>
+            <name>ns-artifact-repository</name>
+            <url>https://download.natusoft.se/maven</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ns-plugin-repo</id>
+            <name>na-plugin-repository</name>
+            <url>https://download.natusoft.se/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!--            <snapshots>-->
+            <!--                <enabled>true</enabled>-->
+            <!--            </snapshots>-->
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!--
+        Distribution Management
+    -->
+
+    <distributionManagement>
+        <repository>
+            <id>download.natusoft.se</id>
+            <name>DownloadNatusoftSe-MarkdownDoc</name>
+            <url>ftp://${maven.repo.upload}/${maven.base.path}</url>
+        </repository>
+    </distributionManagement>
 
     <!--
         Dependencies
@@ -193,18 +230,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--
-        Distribution Management
-    -->
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/tombensve/BeanAnnotationProcessor</url>
-        </repository>
-    </distributionManagement>
 
     <!--
         Profiles
