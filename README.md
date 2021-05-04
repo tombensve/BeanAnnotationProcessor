@@ -14,11 +14,11 @@ _Generates java beans using an @Bean annotation._
 
 [Licenses](https://github.com/tombensve/SimplifiedAnnotationProcessor/blob/master/licenses.md)
 
-----
-
 # Binaries
 
 [Accessing binaries](https://github.com/tombensve/CommonStuff/blob/master/docs/AccessingBinaries.md)
+
+----
 
 ## History
 
