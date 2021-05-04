@@ -16,6 +16,10 @@ _Generates java beans using an @Bean annotation._
 
 ----
 
+# Binaries
+
+[Accessing binaries](https://github.com/tombensve/CommonStuff/blob/master/docs/AccessingBinaries.md)
+
 ## History
 
 ### 2.0.2
